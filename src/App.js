@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useForm } from "./useForm";
 import { Hello } from "./Hello";
 import { useFetch } from "./useFetch";
+import { useMeasure } from "./useMeasure";
 
 // function expensiveInitialState() {
 //   return {
@@ -57,11 +58,17 @@ const App = () => {
   const inputRef = useRef();
   const helloRef = useRef(() => console.log("hello"));
 
+  // useLayoutEffect(() => {
+  //   console.log("useLayoutEffect", inputRef.current.getBoundingClientRect());
+  // }, []);
+
+  const [rect, inputRef2] = useMeasure([]);
+  console.log("rect", JSON.stringify(rect));
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-
+        {/* <div>rect: {rect}</div> */}
         {/* <p>Count1: {count1}</p>
         <p>Count2: {count2}</p>
         <button
@@ -97,12 +104,13 @@ const App = () => {
         <input
           type="password"
           name="password"
+          ref={inputRef2}
           onChange={handleChange}
           value={values.password}
         />
         <button
           onClick={() => {
-            console.log(inputRef.current.getBoundingClientRect());
+            // console.log(inputRef.current.getBoundingClientRect());
             inputRef.current.focus();
             helloRef.current();
           }}

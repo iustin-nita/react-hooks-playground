@@ -34,7 +34,7 @@ export const useFetch = url => {
         if (isCurrent.current) {
           setState({ data: text, loading: false });
         }
-      }, 2000);
+      }, 500);
     };
     fetchF(url);
   }, [url, setState]);
