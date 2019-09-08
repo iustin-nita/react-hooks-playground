@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useForm } from "./useForm";
@@ -21,7 +21,7 @@ const App = () => {
 
   const [values, handleChange] = useForm({ email: "", password: "" });
 
-  // const [showHello, setShowHello] = useState(true);
+  const [showHello, setShowHello] = useState(true);
 
   // useEffect(() => {
   //   console.log("render");
@@ -45,22 +45,23 @@ const App = () => {
   // https://eurosportdigital.github.io/eurosport-web-developer-recruitment/headtohead.json
   // http://numbersapi.com/43
 
-  const [count, setCount] = useState(() =>
-    JSON.parse(localStorage.getItem("count"))
-  );
-  const { data, loading } = useFetch(`http://numbersapi.com/${count}`);
+  // const [count, setCount] = useState(() =>
+  //   JSON.parse(localStorage.getItem("count"))
+  // );
+  // const { data, loading } = useFetch(`http://numbersapi.com/${count}`);
 
-  useEffect(() => {
-    localStorage.setItem("count", JSON.stringify(count));
-  }, [count]);
+  // useEffect(() => {
+  //   localStorage.setItem("count", JSON.stringify(count));
+  // }, [count]);
+
+  const inputRef = useRef();
+  const helloRef = useRef(() => console.log("hello"));
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <div>count: {count}</div>
-        <button onClick={() => setCount(c => c + 1)}>increment</button>
-        <div>{!data ? "loading...." : data}</div>
+
         {/* <p>Count1: {count1}</p>
         <p>Count2: {count2}</p>
         <button
@@ -84,11 +85,12 @@ const App = () => {
           +1 count 2
         </button> */}
 
-        {/* <button onClick={() => setShowHello(!showHello)}>toggle hello</button> */}
-        {/* {showHello && <Hello />} */}
+        <button onClick={() => setShowHello(!showHello)}>toggle hello</button>
+        {showHello && <Hello />}
         <input
           type="email"
           name="email"
+          ref={inputRef}
           value={values.email}
           onChange={handleChange}
         />
@@ -98,6 +100,15 @@ const App = () => {
           onChange={handleChange}
           value={values.password}
         />
+        <button
+          onClick={() => {
+            console.log(inputRef.current.getBoundingClientRect());
+            inputRef.current.focus();
+            helloRef.current();
+          }}
+        >
+          focus
+        </button>
       </header>
     </div>
   );
